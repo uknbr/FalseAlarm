@@ -54,9 +54,9 @@ do
 			"mp3_"*)
 				_mp3_file=$(echo ${msg} | sed 's/mp3_//g')
 				
-				if [ -f mp3/${_mp3_file}.mp3 ]; then
+				if [ -f ${_mp3_file}.mp3 ]; then
 					echo "[$(date '+%D %T')|${MSG_COUNT}] Play: ${_mp3_file}.mp3"
-					mpg123 mp3/${_mp3_file}.mp3 > /dev/null 2>&1
+					mpg123 ${_mp3_file}.mp3 > /dev/null 2>&1
 				fi
 			;;
 
