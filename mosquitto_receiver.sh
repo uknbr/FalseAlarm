@@ -42,7 +42,7 @@ TOPIC="$(hostname)/audio"
 SERVER="$(hostname -I | tr ' ' '\n' | head -1 | tr -d '[:space:]')"
 MSG_COUNT=0
 
-clear
+#clear
 echo -e "Listening on ${SERVER} (${TOPIC})"
 
 while read msg
