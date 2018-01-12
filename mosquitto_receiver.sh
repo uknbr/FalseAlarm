@@ -13,7 +13,7 @@
 #------------------------------------------------------------------
 # INSTALL MOSQUITTO
 #sudo apt-add-repository ppa:mosquitto-dev/mosquitto-ppa
-#ssudo apt-get update
+#sudo apt-get update
 #sudo apt-get install mosquitto mosquitto-clients
 #sudo service mosquitto status
 #------------------------------------------------------------------
