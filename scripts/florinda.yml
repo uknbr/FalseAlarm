@@ -1,0 +1,107 @@
+version: '3.0'
+
+services:
+#  temperature:
+#    container_name: ${TEMPERATURE_CONTAINER}
+#    build:
+#      context: ../temperature
+#    restart: always
+#    devices:
+#      - /dev/gpiomem:/dev/gpiomem
+#    expose:
+#      - ${TEMPERATURE_PORT_INTERNAL}
+#    volumes:
+#      - /etc/timezone:/etc/timezone:ro
+#      - /etc/localtime:/etc/localtime:ro
+#    environment:
+#      - APP_NAME=${TEMPERATURE_CONTAINER}
+#      - PORT=${TEMPERATURE_PORT_INTERNAL}
+#      - INTERVAL=${TEMPERATURE_INTERVAL}
+#      - TEMP_SENSOR=${TEMPERATURE_SENSOR_NAME}
+#      - TEMP_GPIO=${TEMPERATURE_SENSOR_GPIO}
+#      - TEMP_ATTEMPT=${TEMPERATURE_SENSOR_ATTEMPT}
+#    healthcheck:
+#      test: fgrep florinda /proc/*[0-9]*/cmdline || exit 1
+#      interval: ${HEALTHCHECK_SLEEP}
+#      timeout: ${HEALTHCHECK_TIMEOUT}
+#      retries: ${HEALTHCHECK_RETRY}
+#    networks:
+#      - internal-network
+
+  influx:
+    container_name: ${INFLUX_CONTAINER}
+    image: influxdb:${INFLUX_VERSION}
+    restart: always
+    ports:
+      - ${INFLUX_PORT_EXTERNAL}:${INFLUX_PORT_INTERNAL}
+    volumes:
+      - influx_data:/var/lib/influxdb
+    environment:
+      - INFLUXDB_DB=${INFLUX_DB}
+      - INFLUXDB_ADMIN_USER=${INFLUX_ADMIN_USER}
+      - INFLUXDB_ADMIN_PASSWORD=${INFLUX_ADMIN_PASS}
+      - INFLUXDB_USER=${INFLUX_USER}
+      - INFLUXDB_USER_PASSWORD=${INFLUX_PASS}
+    healthcheck:
+      test: curl --fail -s http://localhost:${INFLUX_PORT_INTERNAL}/ping || exit 1
+      interval: ${HEALTHCHECK_SLEEP}
+      timeout: ${HEALTHCHECK_TIMEOUT}
+      retries: ${HEALTHCHECK_RETRY}
+    networks:
+      - internal-network
+
+  grafana:
+    container_name: ${GRAFANA_CONTAINER}
+    image: grafana/grafana:${GRAFANA_VERSION}
+    restart: always
+    expose:
+      - ${GRAFANA_PORT_INTERNAL}
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ../grafana/datasource:/etc/grafana/provisioning/datasources
+      - ../grafana/dashboard:/etc/grafana/provisioning/dashboards
+    environment:
+      - GF_PATHS_PROVISIONING=${GRAFANA_PROVISIONING}
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASS}
+      - GF_SECURITY_LOGIN_REMEMBER_DAYS=${GRAFANA_ADMIN_DAYS}
+      - GF_SERVER_PROTOCOL=http
+      - GF_SERVER_DOMAIN=${GATEWAY_DOMAIN}
+      - GF_SERVER_ROOT_URL=%(protocol)s://%(domain)s${GRAFANA_LOCATION}/
+    healthcheck:
+      test: curl --fail -s http://localhost:${GRAFANA_PORT_INTERNAL} || exit 1
+      interval: ${HEALTHCHECK_SLEEP}
+      timeout: ${HEALTHCHECK_TIMEOUT}
+      retries: ${HEALTHCHECK_RETRY}
+    depends_on:
+      - influx
+    networks:
+      - internal-network
+
+  gateway:
+    container_name: ${GATEWAY_CONTAINER}
+    image: nginx:${GATEWAY_VERSION}
+    restart: always
+    ports:
+      - ${GATEWAY_PORT_EXTERNAL}:${GATEWAY_PORT_INTERNAL}
+    volumes:
+      - gateway_log:/var/log/nginx
+    environment:
+      - DEFAULT_HOST=${GATEWAY_DOMAIN}
+    depends_on:
+      - grafana
+    healthcheck:
+      test: fgrep nginx /proc/*[0-9]*/cmdline || exit 1
+      interval: ${HEALTHCHECK_SLEEP}
+      timeout: ${HEALTHCHECK_TIMEOUT}
+      retries: ${HEALTHCHECK_RETRY}
+    networks:
+      - internal-network
+
+volumes:
+  influx_data:
+  grafana_data:
+  gateway_log:
+
+networks:
+  internal-network:

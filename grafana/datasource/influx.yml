@@ -1,0 +1,15 @@
+datasources:
+- name: 'influx'
+  type: 'influxdb'
+  access: 'proxy'
+  org_id: 1
+  url: http://florinda-influx:8086/
+  database: 'florinda'
+  user: box
+  is_default: true
+  version: 1
+  editable: true
+  jsonData:
+    timeInterval: "15s"
+  secureJsonData:
+    password: 102030!@#
