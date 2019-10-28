@@ -52,9 +52,10 @@
 TOPIC="$(hostname)/audio"
 SERVER="$(hostname -I | tr ' ' '\n' | head -1 | tr -d '[:space:]')"
 MSG_COUNT=0
+LOG_FILE="./log/mosquitto_$(date +%s).log"
 
 clear
-echo -e "Listening on ${SERVER} (${TOPIC})"
+echo -e "Listening on ${SERVER} (${TOPIC})" | tee -a ${LOG_FILE}
 
 while read msg
 do
@@ -63,16 +64,18 @@ do
 
 		case "${msg}" in
 			"mp3_"*)
-				_mp3_file=$(echo ${msg} | sed 's/mp3_//g')
+				_mp3_file=./data/$(echo ${msg} | sed 's/mp3_//g')
 				
 				if [ -f ${_mp3_file}.mp3 ]; then
-					echo "[$(date '+%D %T')|${MSG_COUNT}] Play: ${_mp3_file}.mp3"
+					echo "[$(date '+%D %T')|${MSG_COUNT}] Play: ${_mp3_file}.mp3" | tee -a ${LOG_FILE}
 					mpg123 ${_mp3_file}.mp3 > /dev/null 2>&1
+				else
+					echo "[$(date '+%D %T')|${MSG_COUNT}] ERROR: file not found > ${_mp3_file}.mp3" | tee -a ${LOG_FILE}
 				fi
 			;;
 
 			*)
-				echo "[$(date '+%D %T')|${MSG_COUNT}] Speak: ${msg}"
+				echo "[$(date '+%D %T')|${MSG_COUNT}] Speak: ${msg}" | tee -a ${LOG_FILE}
 				echo "${msg}" | festival --tts
 		esac
 	fi
