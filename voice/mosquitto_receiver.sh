@@ -49,12 +49,20 @@
 #------------------------------------------------------------------
 
 # Main
+export TERM=linux
+TIMEOUT=30
 TOPIC="$(hostname)/audio"
 SERVER="$(hostname -I | tr ' ' '\n' | head -1 | tr -d '[:space:]')"
 MSG_COUNT=0
 LOG_FILE="./log/mosquitto_$(date +%s).log"
 
-clear
+if [ "$1" == "-s" ] ; then
+	for i in $(seq 1 ${TIMEOUT}) ; do
+		sleep 1
+		echo "[${i}/${TIMEOUT}] Waiting ..."
+	done
+fi
+
 echo -e "Listening on ${SERVER} (${TOPIC})" | tee -a ${LOG_FILE}
 
 while read msg
@@ -68,7 +76,7 @@ do
 				
 				if [ -f ${_mp3_file}.mp3 ]; then
 					echo "[$(date '+%D %T')|${MSG_COUNT}] Play: ${_mp3_file}.mp3" | tee -a ${LOG_FILE}
-					mpg123 ${_mp3_file}.mp3 > /dev/null 2>&1
+					/usr/bin/mpg123 ${_mp3_file}.mp3 > /dev/null 2>&1
 				else
 					echo "[$(date '+%D %T')|${MSG_COUNT}] ERROR: file not found > ${_mp3_file}.mp3" | tee -a ${LOG_FILE}
 				fi
@@ -76,9 +84,9 @@ do
 
 			*)
 				echo "[$(date '+%D %T')|${MSG_COUNT}] Speak: ${msg}" | tee -a ${LOG_FILE}
-				echo "${msg}" | festival --tts
+				echo "${msg}" | /usr/bin/festival --tts
 		esac
 	fi
-done < <(mosquitto_sub -h ${SERVER} -t "${TOPIC}")
+done < <(/usr/bin/mosquitto_sub -h ${SERVER} -t "${TOPIC}")
 
 exit 0

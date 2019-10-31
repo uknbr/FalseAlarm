@@ -1,0 +1,14 @@
+[Unit]
+Description=Florinda Voice
+After=ssh.service
+
+[Service]
+ExecStart=/bin/bash mosquitto_receiver.sh -s
+WorkingDirectory=/home/pi/FalseAlarm/voice
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target
