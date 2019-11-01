@@ -46,6 +46,7 @@
 #wget http://ftp.br.debian.org/debian/pool/main/m/mp3gain/mp3gain_1.5.2-r2-2+deb7u1_amd64.deb
 #sudo gdebi mp3gain_1.5.2-r2-2+deb7u1_amd64.deb
 #sudo apt-get -f install
+#mp3gain -c -r *.mp3
 #------------------------------------------------------------------
 
 # Main
