@@ -1,5 +1,5 @@
 # FalseAlarm
-IOT speaker - Alarm your friend at work
+IOT speaker - Alarm your friend at work!\
 It has lovingly been called as **FlorindaBox**
 
 ## Purpose
@@ -15,3 +15,6 @@ Play a sound via FalseAlarm using mosquitto (MQTT protocol)
 - Temperature & Humidity sensor (DHT11)
 - USB webcam
 - Acrylic box
+
+## Screenshots
+![alt text](demo/device.png "MQTT Dash from Android")
