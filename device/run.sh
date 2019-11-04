@@ -1,18 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 BASEDIR=$(dirname "${BASH_SOURCE}")
-
 source <(grep = ${BASEDIR}/config.ini | egrep -v '^#' | awk '{ print "export " $1 }')
-count=0
 
+SERVER="$(hostname -I | tr ' ' '\n' | head -1 | tr -d '[:space:]')"
+count=0
 measure_all="n"
 measure_volts="n"
 measure_temp="n"
 measure_uptime="n"
 measure_memory="n"
 measure_cpu="n"
-
-SERVER="$(hostname -I | tr ' ' '\n' | head -1 | tr -d '[:space:]')"
+measure_disk="n"
 
 function usage() {
     exit $1
@@ -22,7 +21,7 @@ if [ $# -eq 0 ] ; then
     usage 1
 fi
 
-while getopts :htvumc opt
+while getopts :htvumcd opt
 do
     case $opt in
         v)
@@ -37,6 +36,9 @@ do
         m)
             measure_memory="y"
             ;;        
+        d)
+            measure_disk="y"
+            ;;
         c)
             measure_cpu="y"
             ;;
@@ -84,6 +86,12 @@ while true ; do
         _cpu=$(/usr/bin/top -bn1 | /bin/grep "Cpu(s)" | /bin/sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | /usr/bin/awk '{print 100 - $1}')
         echo -e "[${count} | cpu  | $(date +'%D %T')] ${_cpu}"
         mosquitto_pub -h ${SERVER} -t $(hostname)/${CPU_TOPIC} -m "${_cpu}"
+    fi
+
+    if [ "${measure_disk}" == "y" ] ; then
+        _disk=$(/bin/df -hl | /usr/bin/awk '/root/ { print $5 }' | tr -d '%')
+        echo -e "[${count} | disk | $(date +'%D %T')] ${_disk}"
+        mosquitto_pub -h ${SERVER} -t $(hostname)/${DISK_TOPIC} -m "${_disk}"
     fi
 
 	sleep ${INTERVAL}
