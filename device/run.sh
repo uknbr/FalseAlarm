@@ -5,6 +5,7 @@ source <(grep = ${BASEDIR}/config.ini | egrep -v '^#' | awk '{ print "export " $
 
 SERVER="$(hostname -I | tr ' ' '\n' | head -1 | tr -d '[:space:]')"
 count=0
+run_service="n"
 measure_all="n"
 measure_volts="n"
 measure_temp="n"
@@ -21,9 +22,12 @@ if [ $# -eq 0 ] ; then
     usage 1
 fi
 
-while getopts :htvumcd opt
+while getopts :htvumcds opt
 do
     case $opt in
+        s)
+            run_service="y"
+            ;;
         v)
             measure_volts="y"
             ;;
@@ -54,6 +58,18 @@ do
     esac
 done
 
+# Service
+#sudo cp florinda_device.service /etc/systemd/system/
+#sudo systemctl daemon-reload
+#sudo systemctl restart florinda_device
+#sudo systemctl status florinda_device
+#sudo systemctl enable florinda_device.service
+if [ "${run_service}" == "y" ] ; then
+    for i in $(seq 1 ${INTERVAL}) ; do
+        sleep 1
+        echo "[${i}/${INTERVAL}] Waiting ..."
+    done
+fi
 
 while true ; do
 	count=$((${count} + 1))
