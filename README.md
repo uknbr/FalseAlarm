@@ -17,5 +17,6 @@ Play a sound via FalseAlarm using mosquitto (MQTT protocol)
 - Acrylic box
 
 ## Screenshots
-![alt text](demo/device.png "MQTT Dash from Android")
-![alt text](demo/play.png "MyMQTT from Android")
+![alt text](demo/menu.jpg "MQTT Dash - Menu")
+![alt text](demo/voice.jpg "MQTT Dash - Voice")\
+![alt text](demo/device.jpg "MQTT Dash - Device")
