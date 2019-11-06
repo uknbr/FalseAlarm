@@ -16,7 +16,12 @@ Play a sound via FalseAlarm using mosquitto (MQTT protocol)
 - USB webcam
 - Acrylic box
 
-## Screenshots
+![alt text](demo/box1.jpg "Box image")
+![alt text](demo/box2.jpg "Box image")\
+![alt text](demo/box3.jpg "Box image")
+![alt text](demo/box4.jpg "Box image")
+
+## Remote
 ![alt text](demo/menu.jpg "MQTT Dash - Menu")
 ![alt text](demo/voice.jpg "MQTT Dash - Voice")\
 ![alt text](demo/device.jpg "MQTT Dash - Device")
