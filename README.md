@@ -17,9 +17,7 @@ Play a sound via FalseAlarm using mosquitto (MQTT protocol)
 - Acrylic box
 
 ![alt text](demo/box1.jpg "Box image")
-![alt text](demo/box2.jpg "Box image")\
 ![alt text](demo/box3.jpg "Box image")
-![alt text](demo/box4.jpg "Box image")
 
 ## Remote
 ![alt text](demo/menu.jpg "MQTT Dash - Menu")
