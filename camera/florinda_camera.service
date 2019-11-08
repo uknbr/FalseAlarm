@@ -1,0 +1,14 @@
+[Unit]
+Description=Florinda Camera
+After=ssh.service
+
+[Service]
+ExecStart=/bin/bash run.sh -s
+WorkingDirectory=/home/pi/FalseAlarm/camera
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target
