@@ -14,3 +14,6 @@ boinccmd --get_simple_gui_info
 
 # Config
 vim /var/lib/boinc-client/cc_config.xml
+
+# User manual 
+#https://boinc.berkeley.edu/wiki/User_manual
