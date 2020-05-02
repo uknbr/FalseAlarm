@@ -13,7 +13,7 @@ Play a sound via FalseAlarm using mosquitto (MQTT protocol)
 - Hub USB
 - Breadboard (200 point solderless)
 - Temperature & Humidity sensor (DHT11)
-- USB webcam
+- USB webcam (Microdia Sonix USB 2.0 Camera)
 - Acrylic box
 
 ![alt text](demo/box1.jpg "Box image")
