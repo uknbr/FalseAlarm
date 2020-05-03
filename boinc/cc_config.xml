@@ -1,0 +1,15 @@
+<!--
+This is a minimal configuration file cc_config.xml of the BOINC core client.
+For a complete list of all available options and logging flags and their
+meaning see: https://boinc.berkeley.edu/wiki/client_configuration
+-->
+<cc_config>
+  <log_flags>
+    <task>1</task>
+    <file_xfer>1</file_xfer>
+    <sched_ops>1</sched_ops>
+</log_flags>
+<options>
+  <alt_platform>aarch64-unknown-linux-gnu</alt_platform>
+</options>
+</cc_config>
