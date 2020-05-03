@@ -12,6 +12,7 @@ docker run -d \
     -e ServerIP="192.168.0.108" \
     -v "$(pwd)/etc-pihole/:/etc/pihole/" \
     -v "$(pwd)/etc-dnsmasq.d/:/etc/dnsmasq.d/" \
+    -v "$(pwd)/var-log/:/var/log/" \
     --dns=127.0.0.1 --dns=1.1.1.1 \
     --restart=unless-stopped \
     pihole/pihole:latest
