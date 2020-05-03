@@ -5,9 +5,10 @@ sudo aptitude install boinc
 # Start manager - GUI
 boincmgr
 
-# Client
+# Service
 systemctl status boinc-client
 boinc --fetch_minimal_work
+ls /lib/systemd/system/boinc-client.service
 
 # CLI
 boinccmd --get_tasks
