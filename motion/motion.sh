@@ -1,3 +1,10 @@
+
+# Install
+sudo aptitude install motion
+
+# Recorded files
+ll /var/lib/motion/
+
 # Config
 cd /etc/motion/
 cp motion.conf motion.bkp
