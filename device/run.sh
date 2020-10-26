@@ -13,6 +13,7 @@ measure_uptime="n"
 measure_memory="n"
 measure_cpu="n"
 measure_disk="n"
+measure_net="n"
 
 function usage() {
     exit $1
@@ -22,7 +23,7 @@ if [ $# -eq 0 ] ; then
     usage 1
 fi
 
-while getopts :htvumcds opt
+while getopts :htvumcdns opt
 do
     case $opt in
         s)
@@ -46,14 +47,15 @@ do
         c)
             measure_cpu="y"
             ;;
+        n)
+            measure_net="y"
+            ;;
         h)
-            usage
-            exit 0
+            usage 0
             ;;
         *)
             echo "Invalid option: -$OPTARG" >&2
-            usage
-            exit 2
+            usage 2
             ;;
     esac
 done
@@ -108,6 +110,25 @@ while true ; do
         _disk=$(/bin/df -hl | /usr/bin/awk '/root/ { print $5 }' | tr -d '%')
         echo -e "[${count} | disk | $(date +'%D %T')] ${_disk}"
         mosquitto_pub -h ${SERVER} -t $(hostname)/${DISK_TOPIC} -m "${_disk}"
+    fi
+
+    if [ "${measure_net}" == "y" ] ; then
+        _speed=$(which speedtest)
+        if [ -n ${_speed} ] ; then
+            _speed_file=$(mktemp)
+            ${_speed} > ${_speed_file}
+
+            _download=$(grep 'Download:' ${_speed_file} | awk '{ print $2 }')
+            _upload=$(grep 'Upload:' ${_speed_file} | awk '{ print $2 }')
+
+            echo -e "[${count} | down | $(date +'%D %T')] ${_download}"
+            echo -e "[${count} | load | $(date +'%D %T')] ${_upload}"
+
+            mosquitto_pub -h ${SERVER} -t $(hostname)/${NET_DL_TOPIC} -m "${_download}"
+            mosquitto_pub -h ${SERVER} -t $(hostname)/${NET_UL_TOPIC} -m "${_upload}"
+
+            rm -f ${_speed_file}
+        fi
     fi
 
 	sleep ${INTERVAL}

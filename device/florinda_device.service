@@ -3,7 +3,7 @@ Description=Florinda Voice
 After=ssh.service
 
 [Service]
-ExecStart=/bin/bash run.sh -s -t -v -u -m -c -d
+ExecStart=/bin/bash run.sh -s -t -v -u -m -c -d -n
 WorkingDirectory=/home/pi/FalseAlarm/device
 StandardOutput=inherit
 StandardError=inherit
