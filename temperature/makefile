@@ -14,7 +14,7 @@ build: ## Build the container
 	docker image build -t $(DOCKER_USER)/$(APP_NAME):$(VERSION) .
 
 up: ## Run container on port configured in `config.env`
-	docker container run -dti --rm --env-file=./config.env --device /dev/gpiomem -p $(PORT):$(PORT) -v /etc/timezone:/etc/timezone:ro -v /etc/localtime:/etc/localtime:ro --name=$(APP_NAME) --network florinda_internal-network $(DOCKER_USER)/$(APP_NAME):$(VERSION)
+	docker container run -dti --rm --env-file=./config.env --device /dev/gpiomem -v /etc/timezone:/etc/timezone:ro -v /etc/localtime:/etc/localtime:ro --name=$(APP_NAME) $(DOCKER_USER)/$(APP_NAME):$(VERSION)
 
 stop: ## Stop and remove a running container
 	docker container stop $(APP_NAME) 2>/dev/null ; docker container rm -f $(APP_NAME) 2>/dev/null ; docker info >/dev/null 2>&1
@@ -28,7 +28,7 @@ sh: ## Access running container
 log: ## Follow the logs
 	docker logs -f $(APP_NAME)
 
-restart: stop build up status ## Alias to stop, build, up and status
+restart: stop up status ## Alias to stop, up and status
 
 version: ## Output the current version
 	@echo $(VERSION)

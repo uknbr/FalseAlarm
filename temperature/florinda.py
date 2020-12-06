@@ -17,7 +17,7 @@ def main():
 	instance = dht11.DHT11(pin=int(os.getenv('TEMP_GPIO')))
 	attempt = int(os.getenv('TEMP_ATTEMPT')) + 1
 
-	print('Initializing {0}...'.format(os.getenv('APP_NAME')))
+	print(f"Initializing {os.getenv('APP_NAME')}...")
 	count=0
 
 	while True:
