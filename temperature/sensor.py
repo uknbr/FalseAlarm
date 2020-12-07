@@ -15,17 +15,17 @@ def update_mqtt(topic, value):
         try:
             client = mqtt.Client()
             client.connect(mqtt_host, mqtt_port, 60)
-            client.publish(f"{mqtt_host}/{car_model}/{topic}", value, retain=True)
+            client.publish(topic, value, retain=True)
         except Exception as e:
-            print(f"Failed to publish '{value}' on topic {topic}")
+            print(f"Failed to publish '{value}' on topic {topic}\n{e}")
 
 def main():
 	GPIO.setwarnings(False)
 	GPIO.setmode(GPIO.BCM)
 	GPIO.cleanup()
 
-	instance = dht11.DHT11(pin=int(os.getenv('TEMP_GPIO')))
-	attempt = int(os.getenv('TEMP_ATTEMPT')) + 1
+	instance = dht11.DHT11(pin=int(os.getenv("TEMP_GPIO")))
+	attempt = int(os.getenv("TEMP_ATTEMPT")) + 1
 
 	print(f"Initializing {os.getenv('APP_NAME')}...")
 	count=0
