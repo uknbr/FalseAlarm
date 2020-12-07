@@ -11,10 +11,10 @@ help: ## Display help message
 .DEFAULT_GOAL := help
 
 build: ## Build the container
-	docker image build -t $(DOCKER_USER)/$(APP_NAME):$(VERSION) .
+	docker image build -t $(APP_NAME):$(VERSION) .
 
 up: ## Run container on port configured in `config.env`
-	docker container run -dti --rm --env-file=./config.env --device /dev/gpiomem -v /etc/timezone:/etc/timezone:ro -v /etc/localtime:/etc/localtime:ro --name=$(APP_NAME) $(DOCKER_USER)/$(APP_NAME):$(VERSION)
+	docker container run -dti --rm --env-file=./$(cnf) --restart=always --network host --device /dev/gpiomem -v /etc/timezone:/etc/timezone:ro -v /etc/localtime:/etc/localtime:ro --name=$(APP_NAME) $(APP_NAME):$(VERSION)
 
 stop: ## Stop and remove a running container
 	docker container stop $(APP_NAME) 2>/dev/null ; docker container rm -f $(APP_NAME) 2>/dev/null ; docker info >/dev/null 2>&1
