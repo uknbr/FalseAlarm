@@ -30,4 +30,4 @@ Play a sound via FalseAlarm using mosquitto (MQTT protocol)
 ![alt text](demo/menu.jpg "MQTT Dash - Menu")
 ![alt text](demo/voice.jpg "MQTT Dash - Voice")\
 ![alt text](demo/device.jpg "MQTT Dash - Device")\
-![alt text](demo/sensor.jpg "MQTT Sensor")
+![alt text](demo/sensor.jpg "MQTT Dash - Sensor")
