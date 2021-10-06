@@ -1,0 +1,23 @@
+---
+  - name: Install basic packages
+    apt:
+      name: "{{ packages }}"
+      state: latest
+      update_cache: yes
+    vars:
+      packages:
+        - htop
+        - dos2unix
+        - net-tools
+        - git
+        - jq
+
+  - name: Set timezone
+    file:
+      src: /usr/share/zoneinfo/America/Sao_Paulo
+      dest: /etc/localtime
+      owner: root
+      group: root
+      state: link
+    notify:
+      - update timezone
