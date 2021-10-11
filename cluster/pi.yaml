@@ -1,0 +1,13 @@
+---
+- hosts: all
+  gather_facts: no
+
+  tasks:
+  - name: vcgencmd
+    #command: vcgencmd get_config arm_freq && vcgencmd get_config total_mem && vcgencmd measure_temp && vcgencmd measure_volts
+    command: 'vcgencmd measure_temp'
+    register: info
+
+  - name: Output
+    debug:
+      msg: "{{ info.stdout }}"

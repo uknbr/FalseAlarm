@@ -1,6 +1,7 @@
 #--- Init
-ansible all -m ping -i cluster/florinda-cluster.ini
-ansible-playbook cluster/main.yaml -i cluster/florinda-cluster.ini --become
+ansible all -m ping -i florinda-cluster.ini
+ansible-playbook pi.yaml -i florinda-cluster.ini
+ansible-playbook main.yaml -i florinda-cluster.ini --become
 
 #--- K3s
 git clone https://github.com/k3s-io/k3s-ansible.git

@@ -6,3 +6,4 @@
 
   tasks:
     - import_tasks: setup.yaml
+    - import_tasks: cli.yaml
