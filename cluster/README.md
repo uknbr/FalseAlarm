@@ -4,5 +4,6 @@
 ### Setup
 ![alt text](ansible_ping.png "Ping")
 
-![alt text](ansible_install.png "Install")
+![alt text](ansible_temp.png "Temperature")
 
+![alt text](ansible_install.png "Install")
