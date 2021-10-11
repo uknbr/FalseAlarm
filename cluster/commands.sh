@@ -8,4 +8,7 @@ git clone https://github.com/k3s-io/k3s-ansible.git
 cd k3s-ansible
 cp -Rv inventory/sample/ inventory/florindabox
 ansible-playbook site.yml -i inventory/florindabox/hosts.ini
-scp pi@92.168.15.13:~/.kube/config ~/.kube/config
+scp pi@192.168.0.108:~/.kube/config ~/.kube/config
+
+#--- Hello World
+git clone https://github.com/paulbouwer/hello-kubernetes.git
