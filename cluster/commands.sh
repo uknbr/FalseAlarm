@@ -10,5 +10,7 @@ cp -Rv inventory/sample/ inventory/florindabox
 ansible-playbook site.yml -i inventory/florindabox/hosts.ini
 scp pi@192.168.0.108:~/.kube/config ~/.kube/config
 
-#--- Hello World
+#--- Hello World (arm - myoung34/armhf-hello-kubernetes:latest)
 git clone https://github.com/paulbouwer/hello-kubernetes.git
+cd hello-kubernetes/deploy/helm/
+helm install --create-namespace --namespace hello-kubernetes custom-message ./hello-kubernetes --set message="Running from my RPi cluster (florindabox)" --set ingress.configured=true --set ingress.pathPrefix="/app/hello-kubernetes/" --set service.type="ClusterIP"
