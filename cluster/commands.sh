@@ -9,8 +9,10 @@ cd k3s-ansible
 cp -Rv inventory/sample/ inventory/florindabox
 ansible-playbook site.yml -i inventory/florindabox/hosts.ini
 scp pi@192.168.15.36:~/.kube/config ~/.kube/config
+k get no
 
-#--- Hello World (arm - myoung34/armhf-hello-kubernetes:latest)
-git clone https://github.com/paulbouwer/hello-kubernetes.git
-cd hello-kubernetes/deploy/helm/
-helm install --create-namespace --namespace hello-kubernetes custom-message ./hello-kubernetes --set message="Running from my RPi cluster (florindabox)" --set ingress.configured=true --set ingress.pathPrefix="/app/hello-kubernetes/" --set service.type="ClusterIP"
+#--- Hello World
+k apply -f hello.yaml
+k get cronjob hello
+k get job -w
+k delete cronjob hello
