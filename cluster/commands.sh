@@ -1,6 +1,6 @@
 #--- Init
 ansible all -m ping -i florinda-cluster.ini
-ansible-playbook pi.yaml -i florinda-cluster.ini
+ansible-playbook temp.yaml -i florinda-cluster.ini
 ansible-playbook main.yaml -i florinda-cluster.ini --become
 
 #--- K3s
