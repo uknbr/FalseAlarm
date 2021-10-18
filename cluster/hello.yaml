@@ -1,15 +1,53 @@
-apiVersion: batch/v1beta1
-kind: CronJob
+apiVersion: v1
+kind: Service
 metadata:
-  name: hello
+  name: hello-kubernetes-custom
 spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: hello-kubernetes-custom
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-kubernetes-custom
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: hello-kubernetes-custom
+  template:
+    metadata:
+      labels:
+        app: hello-kubernetes-custom
     spec:
-      template:
-        spec:
-          containers:
-          - name: hello
-            image: starkandwayne/hello-multiarch:cat-log
-            imagePullPolicy: IfNotPresent
-          restartPolicy: OnFailure
+      containers:
+      - name: hello-kubernetes
+        image: myoung34/armhf-hello-kubernetes:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: MESSAGE
+          value: FlorindaBox is running!
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello-kubernetes-custom
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    #traefik.frontend.rule.type: PathPrefixStrip
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /hello
+        pathType: Prefix
+        backend:
+          service:
+            name: hello-kubernetes-custom
+            port:
+              number: 8080

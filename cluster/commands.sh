@@ -12,7 +12,6 @@ scp pi@192.168.15.36:~/.kube/config ~/.kube/config
 k get no
 
 #--- Hello World
-k apply -f hello.yaml
-k get cronjob hello
-k get job -w
-k delete cronjob hello
+k create ns hello
+k -n hello apply -f hello.yaml
+curl -I http://192.168.15.36.traefik.me/
