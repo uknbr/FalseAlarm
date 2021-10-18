@@ -44,7 +44,7 @@ spec:
   rules:
   - http:
       paths:
-      - path: /hello
+      - path: /
         pathType: Prefix
         backend:
           service:
