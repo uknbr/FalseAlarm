@@ -10,4 +10,3 @@ unzip ngrok-stable-linux-arm64.zip
 ./ngrok -v
 ./ngrok authtoken <token>
 ./ngrok http 6060
-

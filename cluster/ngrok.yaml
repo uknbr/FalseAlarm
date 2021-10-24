@@ -1,0 +1,48 @@
+---
+- hosts: master
+
+  vars:
+    configfile: /etc/ngrok.yml
+    configport: 80
+
+  tasks:
+  - name: Ngrok Configuration file
+    blockinfile:
+      create: yes
+      path: "{{ configfile }}"
+      mode: 0644
+      marker: "# {mark} Ngrok"
+      block: |
+        authtoken: {{ token }}
+        tunnels:
+          default:
+            proto: http
+            addr: {{ configport }} 
+
+  - name: Ngrok Service file
+    blockinfile:
+      create: yes
+      path: /etc/systemd/system/ngrok.service
+      mode: 0644
+      marker: "# {mark} Ngrok"
+      block: |
+        [Unit]
+        Description=Ngrok
+        After=network.service
+        
+        [Service]
+        type=simple
+        User=pi
+        WorkingDirectory=/home/pi
+        ExecStart=/usr/bin/ngrok start --all --config="{{ configfile }}"
+        Restart=on-failure
+        
+        [Install]
+        WantedBy=multi-user.target
+
+  - name: Start service
+    systemd:
+      name: ngrok
+      state: restarted
+      daemon_reload: yes
+      enabled: yes
