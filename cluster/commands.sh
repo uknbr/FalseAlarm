@@ -18,3 +18,18 @@ curl -I http://192.168.15.36.traefik.me/
 
 #--- Ngrok
 ansible-playbook ngrok.yaml -i florinda-cluster.ini --extra-vars "@ngrok-token.yaml" --become
+
+#--- PiHole
+helm repo add mojo2600 https://mojo2600.github.io/pihole-kubernetes/
+helm repo update
+helm search repo pihole
+helm pull mojo2600/pihole --version 2.5.0
+helm show values pihole-2.5.0.tgz > pihole.yaml
+k label nodes worker1 app=pihole
+k label nodes worker2 app=pihole
+k create namespace pihole
+ssh worker1 'sudo mkdir -p /data ; sudo chmod 777 /data'
+k apply -f ../pihole/pihole.persistentvolume.yml
+k apply -f ../pihole/pihole.persistentvolumeclaim.yml
+k create secret generic pihole-secret --from-literal='password=admin' --namespace pihole
+helm upgrade -i -n pihole pihole mojo2600/pihole --values ../pihole/pihole.yaml

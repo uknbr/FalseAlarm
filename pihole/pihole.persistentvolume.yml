@@ -1,0 +1,17 @@
+## pihole.persistentvolume.yml
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: "pihole"
+  labels:
+    type: "local"
+spec:
+  storageClassName: "manual"
+  capacity:
+    storage: "500Mi"
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/data/pihole"
+---
