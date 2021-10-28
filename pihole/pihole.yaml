@@ -225,7 +225,6 @@ admin:
 # -- extraEnvironmentVars is a list of extra enviroment variables to set for pihole to use
 extraEnvVars:
   TZ: "America/Sao_Paulo"
-  ServerIP: 192.168.15.37
 
 # -- extraEnvVarsSecret is a list of secrets to load in as environment variables.
 extraEnvVarsSecret: {}
@@ -323,8 +322,10 @@ adlists:
   # - https://reddestdream.github.io/Projects/MinimalHosts/etc/MinimalHostsBlocker/minimalhosts
 
 # -- list of whitelisted domains to import during initial start of the container
-whitelist: {}
+whitelist:
   # If you want to provide whitelisted domains, add them here.
+    - (\.|^)\.traefik\.me$
+    - (\.|^)\.nip\.io$
   # - clients4.google.com
 
 # -- list of blacklisted domains to import during initial start of the container
