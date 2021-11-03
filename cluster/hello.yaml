@@ -33,21 +33,19 @@ spec:
         - name: MESSAGE
           value: FlorindaBox is running!
 ---
-apiVersion: networking.k8s.io/v1
+apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: hello-kubernetes-custom
   annotations:
-    kubernetes.io/ingress.class: traefik
-    #traefik.frontend.rule.type: PathPrefixStrip
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+  name: hello-kubernetes-custom
 spec:
   rules:
-  - http:
+  - host: hello.192.168.15.36.traefik.me
+    http:
       paths:
-      - path: /
+      - backend:
+          serviceName: hello-kubernetes-custom
+          servicePort: 8080
+        path: /
         pathType: Prefix
-        backend:
-          service:
-            name: hello-kubernetes-custom
-            port:
-              number: 8080
