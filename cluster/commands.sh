@@ -3,6 +3,25 @@ ansible all -m ping -i florinda-cluster.ini
 ansible-playbook temp.yaml -i florinda-cluster.ini
 ansible-playbook main.yaml -i florinda-cluster.ini --become
 
+#--- NFS
+sudo fdisk -l
+sudo mkdir -p /mnt/hd
+sudo chown -R pi:pi /mnt/hd/
+sudo mount -t ntfs-3g -o nofail,uid=1000,gid=1000,umask=007 /dev/sda1 /mnt/hd
+
+sudo blkid /dev/sda1
+echo "PARTUUID=e1094f4b-01  /mnt/hd         ntfs    defaults          0       0" | sudo tee -a /etc/fstab
+
+sudo apt-get install nfs-kernel-server -y
+echo "/mnt/hd/florinda/nfs *(rw,sync,no_root_squash,subtree_check)" | sudo tee -a /etc/exports
+sudo exportfs -ra
+
+sudo apt-get install nfs-common -y
+sudo mkdir -p /mnt/hd/florinda/nfs
+sudo chown -R pi:pi /mnt/hd/
+echo "192.168.15.36:/mnt/hd/florinda/nfs   /mnt/hd/florinda/nfs   nfs    rw  0  0" | sudo tee -a /etc/fstab
+sudo mount -a
+
 #--- K3s
 git clone https://github.com/k3s-io/k3s-ansible.git
 cd k3s-ansible
