@@ -10,10 +10,11 @@ sudo chown -R pi:pi /mnt/hd/
 sudo mount -t ntfs-3g -o nofail,uid=1000,gid=1000,umask=007 /dev/sda1 /mnt/hd
 
 sudo blkid /dev/sda1
-echo "PARTUUID=e1094f4b-01  /mnt/hd         ntfs    defaults,nofail,uid=1000,gid=1000,umask=700       0       0" | sudo tee -a /etc/fstab
+echo "PARTUUID=e1094f4b-01  /mnt/hd         ntfs    defaults,nofail,uid=1000,gid=1000,umask=022       0       0" | sudo tee -a /etc/fstab
 
 sudo apt-get install nfs-kernel-server -y
 echo "/mnt/hd/florinda/nfs *(rw,sync,no_root_squash,subtree_check)" | sudo tee -a /etc/exports
+echo "/mnt/hd/florinda/share *(rw,sync,no_root_squash,subtree_check)" | sudo tee -a /etc/exports
 sudo exportfs -ra
 
 sudo apt-get install nfs-common -y

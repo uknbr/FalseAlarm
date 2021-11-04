@@ -1,0 +1,12 @@
+---
+  - name: Config Swap Size as 0
+    lineinfile:
+      path: /etc/dphys-swapfile
+      line: CONF_SWAPSIZE=0
+      create: yes
+
+  - name: Stop/Disable dphys service
+    systemd:
+      name: dphys-swapfile
+      state: stopped
+      enabled: no
