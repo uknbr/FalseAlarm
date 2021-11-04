@@ -10,3 +10,9 @@
 
 ### K3s
 ![alt text](k3s.png "K3s")
+
+### Manage (Lens & Kubenav)
+![alt text](florindabox_lens.png "Desktop - Lens")
+
+![alt text](kubenav-1.jpeg "Android - Kubenav")
+![alt text](kubenav-2.jpeg "Android - Kubenav")
