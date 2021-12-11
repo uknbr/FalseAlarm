@@ -34,7 +34,7 @@ k get no
 #--- Hello World
 k create ns hello
 k -n hello apply -f hello.yaml
-curl -I http://192.168.15.36.traefik.me/
+curl -I http://hello.192.168.15.36.traefik.me/
 
 #--- Ngrok
 ansible-playbook ngrok.yaml -i florinda-cluster.ini --extra-vars "@ngrok-token.yaml" --become

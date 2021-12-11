@@ -49,3 +49,20 @@ spec:
           servicePort: 8080
         path: /
         pathType: Prefix
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+  name: hello-kubernetes-local
+spec:
+  rules:
+  - host: localhost
+    http:
+      paths:
+      - backend:
+          serviceName: hello-kubernetes-custom
+          servicePort: 8080
+        path: /
+        pathType: Prefix
