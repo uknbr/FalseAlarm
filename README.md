@@ -8,6 +8,7 @@ Check other functions:
 - [PiHole](pihole/docker_run.sh)
 - [Boinc](boinc/boinc.sh)
 - [Tor](tor/tor.sh)
+- [Tor](cluster/README.md)
 
 ## Purpose
 Would you like to make funny moment even better?\
