@@ -27,13 +27,13 @@ sudo mount -a
 git clone https://github.com/k3s-io/k3s-ansible.git
 cd k3s-ansible
 cp -Rv inventory/sample/ inventory/florindabox
+ansible-playbook reset.yml -i inventory/florindabox/hosts.ini
 ansible-playbook site.yml -i inventory/florindabox/hosts.ini
 scp pi@192.168.15.36:~/.kube/config ~/.kube/config
 k get no
 
 #--- Hello World
-k create ns hello
-k -n hello apply -f hello.yaml
+ansible-playbook hello-app.yaml -i florinda-cluster.ini
 curl -I http://hello.192.168.15.36.traefik.me/
 
 #--- Ngrok
@@ -49,6 +49,7 @@ k label nodes worker1 app=pihole
 k label nodes worker2 app=pihole
 k create namespace pihole
 ssh worker1 'sudo mkdir -p /data ; sudo chmod 777 /data'
+ssh worker2 'sudo mkdir -p /data ; sudo chmod 777 /data'
 k apply -f ../pihole/pihole.persistentvolume.yml
 k apply -f ../pihole/pihole.persistentvolumeclaim.yml
 k create secret generic pihole-secret --from-literal='password=admin' --namespace pihole
