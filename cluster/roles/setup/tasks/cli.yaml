@@ -17,7 +17,7 @@
         export MANPAGER="less -X"
         export PS1='[\[\033[01;33m\]\t\[\033[00m\]|\[\033[01;35m\]\#\[\033[00m\]] \[\033[01;31m\]${?##0}\[\033[00m\](\[\033[01;32m\]\u\[\033[00m\]@\[\033[01;36m\]\H\[\033[00m\]):\[\033[01;34m\]\w\[\033[00m\] \$ '
 
-  - name: Z
+  - name: Z location
     get_url:
       url: https://raw.githubusercontent.com/rupa/z/master/z.sh
       dest: /usr/local/bin/z

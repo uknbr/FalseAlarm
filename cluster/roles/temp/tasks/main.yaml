@@ -1,0 +1,9 @@
+---
+
+  - name: vcgencmd
+    command: 'vcgencmd measure_temp'
+    register: info
+
+  - name: Output
+    debug:
+      msg: "{{ info.stdout }}"

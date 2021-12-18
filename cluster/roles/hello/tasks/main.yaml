@@ -1,25 +1,13 @@
 ---
-- hosts: master
 
-  vars:
-    app_port: 8080
-    app_name: hello-florinda
-    app_rs: 4
-    app_ns: hello
-    app_image: myoung34/armhf-hello-kubernetes:latest
-    app_url: hello.192.168.15.36.traefik.me
-    kubeconfig: /home/pi/.kube/config
-
-  tasks:
-
-  - name: Hello Namespace
+  - name: Namespace
     k8s:
       name: "{{ app_ns }}"
       api_version: v1
       kind: Namespace
       state: present
   
-  - name: Hello Deployment
+  - name: Deployment
     k8s:
       state: present
       definition:
@@ -49,7 +37,7 @@
                 ports:
                   - containerPort: "{{ app_port }}"
 
-  - name: Hello Service
+  - name: Service
     k8s:
       state: present
       definition:
@@ -70,7 +58,7 @@
           sessionAffinity: None
           type: ClusterIP
 
-  - name: Hello Ingress
+  - name: Ingress
     k8s:
       state: present
       definition:

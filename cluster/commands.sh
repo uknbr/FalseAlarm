@@ -1,7 +1,14 @@
-#--- Init
-ansible all -m ping -i florinda-cluster.ini
-ansible-playbook temp.yaml -i florinda-cluster.ini
-ansible-playbook main.yaml -i florinda-cluster.ini --become
+#--- Ansible roles
+# Ping
+ansible all -m ping
+# Basic Setup
+ansible-playbook setup.yaml
+# RPi temperature
+ansible-playbook temp.yaml
+# Deploy Hello App
+ansible-playbook hello.yaml
+# Install Ngrok
+ansible-playbook ngrok.yaml
 
 #--- NFS
 sudo fdisk -l
@@ -31,13 +38,6 @@ ansible-playbook reset.yml -i inventory/florindabox/hosts.ini
 ansible-playbook site.yml -i inventory/florindabox/hosts.ini
 scp pi@192.168.15.36:~/.kube/config ~/.kube/config
 k get no
-
-#--- Hello World
-ansible-playbook hello-app.yaml -i florinda-cluster.ini
-curl -I http://hello.192.168.15.36.traefik.me/
-
-#--- Ngrok
-ansible-playbook ngrok.yaml -i florinda-cluster.ini --extra-vars "@ngrok-token.yaml" --become
 
 #--- PiHole
 helm repo add mojo2600 https://mojo2600.github.io/pihole-kubernetes/

@@ -1,10 +1,5 @@
 ---
-- hosts: all
 
-  handlers:
-    - import_tasks: handlers.yaml
-
-  tasks:
     - import_tasks: setup.yaml
     - import_tasks: cli.yaml
     - import_tasks: swap.yaml

@@ -1,0 +1,3 @@
+---
+configfile: /etc/ngrok.yml
+configport: 80

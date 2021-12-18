@@ -1,34 +1,7 @@
 ---
-  - name: Install basic packages
-    apt:
-      name: "{{ packages }}"
-      state: latest
-      update_cache: yes
-    vars:
-      packages:
-        - htop
-        - dos2unix
-        - net-tools
-        - git
-        - jq
-        - aptitude
-        - python3
-        - python3-pip
 
-  - name: Set timezone
-    file:
-      src: /usr/share/zoneinfo/America/Sao_Paulo
-      dest: /etc/localtime
-      owner: root
-      group: root
-      state: link
-    notify:
-      - update timezone
-
-  - name: Install k8s modules
-    pip:
-      name:
-        - openshift
-        - pyyaml
-        - kubernetes
-      executable: /usr/bin/pip3
+- hosts: all
+  gather_facts: yes
+  become: yes
+  roles:
+    - role: setup
