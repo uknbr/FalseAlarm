@@ -31,13 +31,17 @@ echo "192.168.15.36:/mnt/hd/florinda/nfs   /mnt/hd/florinda/nfs   nfs    rw  0  
 sudo mount -a
 
 #--- K3s
+# Clone
 git clone https://github.com/k3s-io/k3s-ansible.git
 cd k3s-ansible
+# Hosts
 cp -Rv inventory/sample/ inventory/florindabox
+# Uninstall
 ansible-playbook reset.yml -i inventory/florindabox/hosts.ini
+# Install
 ansible-playbook site.yml -i inventory/florindabox/hosts.ini
-scp pi@192.168.15.36:~/.kube/config ~/.kube/config
-k get no
+# Kubeconfig
+ssh pi@192.168.15.36 'cat ~/.kube/config' | sed 's/default/florindabox/g' | tee ~/.kube/config
 
 #--- PiHole
 helm repo add mojo2600 https://mojo2600.github.io/pihole-kubernetes/
