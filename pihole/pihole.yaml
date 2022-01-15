@@ -129,10 +129,10 @@ ingress:
     kubernetes.io/ingress.class: traefik
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  path: /pihole
+  path: /
   hosts:
     # virtualHost (default value is pi.hole) will be appended to the hosts
-    - chart-example.local
+    - pihole.192.168.15.36.traefik.me
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -286,7 +286,7 @@ dnsmasq:
     - 192.168.15.36   master
     - 192.168.15.37   worker1
     - 192.168.15.38   worker2
-    - 192.168.15.37   pihole
+    - 192.168.15.36   pihole
   # - 192.168.0.4     host5
 
   # -- Static DHCP config
@@ -399,4 +399,3 @@ podDnsConfig:
   nameservers:
   - 127.0.0.1
   - 8.8.8.8
-
