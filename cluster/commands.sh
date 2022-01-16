@@ -58,3 +58,10 @@ k apply -f ../pihole/pihole.persistentvolume.yml
 k apply -f ../pihole/pihole.persistentvolumeclaim.yml
 k create secret generic pihole-secret --from-literal='password=admin' --namespace pihole
 helm upgrade -i -n pihole pihole mojo2600/pihole --values ../pihole/pihole.yaml
+
+#--- Monitoring
+git clone https://github.com/cablespaghetti/k3s-monitoring
+cd k3s-monitoring
+k label nodes worker1 type=worker
+k label nodes worker2 type=worker
+helm upgrade --install prometheus prometheus-community/kube-prometheus-stack --version 13.4.1 --values kube-prometheus-stack-values.yaml
