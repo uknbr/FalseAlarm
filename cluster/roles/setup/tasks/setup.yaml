@@ -25,11 +25,3 @@
       state: link
     notify:
       - update timezone
-
-  - name: Install k8s modules
-    pip:
-      name:
-        - openshift
-        - pyyaml
-        - kubernetes
-      executable: /usr/bin/pip3

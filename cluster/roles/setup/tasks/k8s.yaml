@@ -1,0 +1,20 @@
+---
+
+- name: Install Helm
+  unarchive:
+    src: https://get.helm.sh/helm-v{{ helm_version }}-linux-arm.tar.gz
+    dest: /usr/local/bin
+    extra_opts:
+    - --strip=1
+    - --wildcards
+    - '*/helm'
+    remote_src: yes
+    mode: 0755
+
+- name: Install k8s modules
+  pip:
+    name:
+      - openshift
+      - pyyaml
+      - kubernetes
+    executable: /usr/bin/pip3
