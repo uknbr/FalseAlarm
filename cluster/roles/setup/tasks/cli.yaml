@@ -9,6 +9,10 @@
         alias la='ls -A'
         alias l='ls -CF'
         alias vi='vim'
+        alias k=kubectl
+        complete -F __start_kubectl k
+        export KUBECONFIG=~/.kube/config
+        export EDITOR=vim
         export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD
         export HISTSIZE=32768
         export HISTFILESIZE=$HISTSIZE
