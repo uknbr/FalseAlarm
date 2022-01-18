@@ -1,0 +1,55 @@
+---
+  - name: Add label to existing node
+    kubernetes.core.k8s:
+      state: present
+      kind: Node
+      name: "{{ item }}"
+      definition:
+        metadata:
+          labels:
+            app: pihole
+    with_items:
+      - "{{ target_nodes }}"
+
+  - name: Create namespace
+    kubernetes.core.k8s:
+      name: "{{ target_namespace }}"
+      api_version: v1
+      kind: Namespace
+      state: present
+
+  # TODO: Need to improve data location
+  - name: Create data location
+    ansible.builtin.file:
+      path: "{{ volume_data }}"
+      state: directory
+      mode: 0777
+    delegate_to: "{{ item }}"
+    with_items:
+      - "{{ target_nodes }}"
+
+  - name: Create password
+    kubernetes.core.k8s:
+      state: present
+      template: "secret.j2"
+  
+  - name: Volume data
+    kubernetes.core.k8s:
+      state: present
+      template: "{{ item }}"
+    with_items:
+      - "persistentvolume.j2"
+      - "persistentvolumeclaim.j2"
+
+  - name: Add helm repo
+    kubernetes.core.helm_repository:
+      name: "{{ helm_chart_name }}"
+      repo_url: "{{ helm_chart_url }}"
+
+  - name: Deploy pihole chart
+    kubernetes.core.helm:
+      name: "{{ helm_chart_name }}"
+      chart_ref: "{{ helm_chart_name }}/pihole"
+      release_namespace: "{{ target_namespace }}"
+      chart_version: "{{ helm_chart_version }}"
+      values: "{{ lookup('template', 'pihole.j2') | from_yaml }}"

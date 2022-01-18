@@ -1,0 +1,7 @@
+---
+
+- hosts: master
+  gather_facts: no
+  become: no
+  roles:
+    - role: pihole

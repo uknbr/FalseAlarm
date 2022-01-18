@@ -1,3 +1,16 @@
+#--- K3s
+# Clone
+git clone https://github.com/k3s-io/k3s-ansible.git
+cd k3s-ansible
+# Hosts
+cp -Rv inventory/sample/ inventory/florindabox
+# Uninstall
+ansible-playbook reset.yml -i inventory/florindabox/hosts.ini
+# Install
+ansible-playbook site.yml -i inventory/florindabox/hosts.ini
+# Kubeconfig
+ssh pi@192.168.15.36 'cat ~/.kube/config' | sed 's/default/florindabox/g' | tee ~/.kube/config
+
 #--- Ansible roles
 # Ping
 ansible all -m ping
@@ -9,6 +22,8 @@ ansible-playbook temp.yaml
 ansible-playbook hello.yaml
 # Install Ngrok
 ansible-playbook ngrok.yaml
+# Install PiHole
+ansible-playbook pihole.yaml
 
 #--- NFS
 sudo fdisk -l
@@ -30,43 +45,16 @@ sudo chown -R pi:pi /mnt/hd/
 echo "192.168.15.36:/mnt/hd/florinda/nfs   /mnt/hd/florinda/nfs   nfs    rw  0  0" | sudo tee -a /etc/fstab
 sudo mount -a
 
-#--- K3s
-# Clone
-git clone https://github.com/k3s-io/k3s-ansible.git
-cd k3s-ansible
-# Hosts
-cp -Rv inventory/sample/ inventory/florindabox
-# Uninstall
-ansible-playbook reset.yml -i inventory/florindabox/hosts.ini
-# Install
-ansible-playbook site.yml -i inventory/florindabox/hosts.ini
-# Kubeconfig
-ssh pi@192.168.15.36 'cat ~/.kube/config' | sed 's/default/florindabox/g' | tee ~/.kube/config
-
-#--- PiHole
-helm repo add mojo2600 https://mojo2600.github.io/pihole-kubernetes/
-helm repo update
-helm search repo pihole
-helm pull mojo2600/pihole --version 2.5.0
-helm show values pihole-2.5.0.tgz > pihole.yaml
-k label nodes worker1 app=pihole
-k label nodes worker2 app=pihole
-k create namespace pihole
-ssh worker1 'sudo mkdir -p /data ; sudo chmod 777 /data'
-ssh worker2 'sudo mkdir -p /data ; sudo chmod 777 /data'
-k apply -f ../pihole/pihole.persistentvolume.yml
-k apply -f ../pihole/pihole.persistentvolumeclaim.yml
-k create secret generic pihole-secret --from-literal='password=admin' --namespace pihole
-helm upgrade -i -n pihole pihole mojo2600/pihole --values ../pihole/pihole.yaml
-
 #--- Monitoring
 #git clone https://github.com/cablespaghetti/k3s-monitoring
 #cd k3s-monitoring
 #k label nodes worker1 type=worker
 #k label nodes worker2 type=worker
 #helm upgrade --install prometheus prometheus-community/kube-prometheus-stack --version 13.4.1 --values kube-prometheus-stack-values.yaml
-
 k label nodes master type=master
 k label nodes worker1 type=worker
 k label nodes worker2 type=worker
 k apply -f monitoring/
+
+
+docker run -p 8086:8086 -v $PWD/influxdb.conf:/etc/influxdb/influxdb.conf:ro influxdb:1.8 -config /etc/influxdb/influxdb.conf
