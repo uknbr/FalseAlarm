@@ -8,4 +8,5 @@ FROM alpine:3.15.0
 WORKDIR /app
 RUN apk add tzdata
 ENV TZ "America/Sao_Paulo"
-COPY --from=build_img /output/florinda-speedtest /app/florindabox-speedtest
+COPY --from=build_img /output/florindabox-speedtest /app/florindabox-speedtest
+ENTRYPOINT ["/app/florindabox-speedtest"]
