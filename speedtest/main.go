@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"time"
+	_ "time/tzdata"
 	"log"
 	"github.com/showwin/speedtest-go/speedtest"
 	"github.com/influxdata/influxdb1-client/v2"
@@ -31,7 +32,10 @@ func addMetrics(c client.Client, l float64, d float64, u float64) {
 		log.Fatalln("Error: ", err)
 	}
 
-	eventTime := time.Now().Add(time.Second * -20)
+	loc, err := time.LoadLocation("America/Sao_Paulo")
+	if err != nil {
+		panic(err)
+	}
 
 	tags := map[string]string{
 		"cluster": "florindabox",
@@ -48,7 +52,7 @@ func addMetrics(c client.Client, l float64, d float64, u float64) {
 		"speed_status",
 		tags,
 		fields,
-		eventTime.Add(time.Second*10),
+		time.Now().In(loc),
 	)
 	if err != nil {
 		log.Fatalln("Error: ", err)
@@ -74,13 +78,17 @@ func main() {
 	targets, _ := serverList.FindServer([]int{})
 
 	fmt.Print("Testing download/upload speed\n")
-	for _, s := range targets {
-		s.PingTest()
-		s.DownloadTest(false)
-		s.UploadTest(false)
 
-		latency := convertLatency(s.Latency)
-		fmt.Printf("\nLatency: %f ms\nDownload: %f Mbit/s\nUpload: %f Mbit/s\n", latency, s.DLSpeed, s.ULSpeed)
-		addMetrics(c, latency, s.DLSpeed, s.ULSpeed)
+	for true {
+		for _, s := range targets {
+			s.PingTest()
+			s.DownloadTest(false)
+			s.UploadTest(false)
+
+			latency := convertLatency(s.Latency)
+			fmt.Printf("[%s] Latency: %f ms\tDownload: %f Mbit/s\tUpload: %f Mbit/s\n", time.Now().Format("Jan 02, 2006 15:04:05"), latency, s.DLSpeed, s.ULSpeed)
+			addMetrics(c, latency, s.DLSpeed, s.ULSpeed)
+		}
+		time.Sleep(time.Minute * 5)
 	}
 }

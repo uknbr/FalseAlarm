@@ -56,5 +56,6 @@ k label nodes worker1 type=worker
 k label nodes worker2 type=worker
 k apply -f monitoring/
 
-
-docker run -p 8086:8086 -v $PWD/influxdb.conf:/etc/influxdb/influxdb.conf:ro influxdb:1.8 -config /etc/influxdb/influxdb.conf
+# InfluxDB
+docker run --rm influxdb:1.8 influxd config > influxdb.conf
+docker run -dti --name influxdb -p 8086:8086 -v $PWD/influxdb.conf:/etc/influxdb/influxdb.conf:ro influxdb:1.8 -config /etc/influxdb/influxdb.conf
