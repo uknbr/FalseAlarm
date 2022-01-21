@@ -1,8 +1,9 @@
 FROM golang:1.17.6-alpine as build_img
+ARG ARCH
 WORKDIR /output/
 COPY . .
 RUN go mod download
-RUN go build -o /output/florindabox-speedtest .
+RUN GOOS=linux GOARCH=$ARCH go build -o /output/florindabox-speedtest .
 
 FROM alpine:3.15.0
 WORKDIR /app
