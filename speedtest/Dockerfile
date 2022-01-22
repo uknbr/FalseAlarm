@@ -1,11 +1,10 @@
-ARG ARCH
-FROM --platform=linux/$ARCH golang:1.17.6-alpine as build_img
+FROM golang:1.17.6-alpine as build_img
 WORKDIR /output/
 COPY . .
 RUN go mod download
-RUN GOOS=linux GOARCH=$ARCH go build -o /output/florindabox-speedtest .
+RUN go build -o /output/florindabox-speedtest .
 
-FROM --platform=linux/$ARCH alpine:3.15.0
+FROM alpine:3.15.0
 WORKDIR /app
 RUN apk add tzdata
 ENV TZ "America/Sao_Paulo"
