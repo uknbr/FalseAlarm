@@ -1,4 +1,4 @@
-module florinda/speedtest
+module florinda/chiquinha
 
 go 1.17
 
