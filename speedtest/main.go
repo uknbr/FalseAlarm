@@ -36,7 +36,7 @@ func addMetrics(l float64, d float64, u float64) {
 	var c client.Client = influxDBClient()
 
 	bp, err := client.NewBatchPoints(client.BatchPointsConfig{
-		Database:  getEnv("INFLUX_SERIE", "speedtest"),
+		Database:  getEnv("INFLUX_DB", "florindabox"),
 		Precision: "s",
 	})
 	if err != nil {
