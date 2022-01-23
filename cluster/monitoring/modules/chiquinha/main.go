@@ -108,7 +108,7 @@ func main() {
 			s.UploadTest(false)
 
 			latency := convertLatency(s.Latency)
-			fmt.Printf("[%s] Latency: %f ms\tDownload: %f Mbit/s\tUpload: %f Mbit/s\n", time.Now().Format("Jan 09, 2020 15:04:05"), latency, s.DLSpeed, s.ULSpeed)
+			fmt.Printf("[%s] Latency: %f ms\tDownload: %f Mbit/s\tUpload: %f Mbit/s\n", time.Now().Format("Jan 02, 2006 15:04:05"), latency, s.DLSpeed, s.ULSpeed)
 			if enable_influx {
 				addMetrics(latency, s.DLSpeed, s.ULSpeed)
 			}
