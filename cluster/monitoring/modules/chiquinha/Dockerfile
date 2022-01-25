@@ -9,5 +9,6 @@ WORKDIR /app
 LABEL module="speedtest"
 RUN apk add tzdata
 ENV TZ "America/Sao_Paulo"
+RUN apk add speedtest-cli
 COPY --from=build_img /output/florindabox-chiquinha /app/florindabox-chiquinha
 ENTRYPOINT ["/app/florindabox-chiquinha"]
