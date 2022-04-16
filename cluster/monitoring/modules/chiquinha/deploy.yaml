@@ -1,13 +1,13 @@
 ---
 apiVersion: v1
-data:
-  INFLUX_DB: ZmxvcmluZGFib3g=
-  INFLUX_HOST: aW5mbHV4ZGI=
-  INFLUX_PORT: ODA4Ng==
 kind: Secret
 metadata:
   name: chiquinha-cred
   namespace: monitoring
+data:
+  INFLUX_DB: ZmxvcmluZGFib3g=
+  INFLUX_HOST: aW5mbHV4ZGI=
+  INFLUX_PORT: ODA4Ng==
 type: Opaque
 ---
 apiVersion: v1
