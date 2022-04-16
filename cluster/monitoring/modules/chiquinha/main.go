@@ -93,11 +93,21 @@ func main() {
 	}
 
 	fmt.Print("Retrieving speedtest.net configuration...\n")
-	user, _ := speedtest.FetchUserInfo()
+	user, err := speedtest.FetchUserInfo()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	fmt.Print("Selecting best server based on ping...\n")
-	serverList, _ := speedtest.FetchServerList(user)
-	targets, _ := serverList.FindServer([]int{})
+	serverList, err := speedtest.FetchServerList(user)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	targets, err := serverList.FindServer([]int{})
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	fmt.Print("Testing download/upload speed\n")
 
@@ -109,6 +119,11 @@ func main() {
 
 			latency := convertLatency(s.Latency)
 			fmt.Printf("[%s] Latency: %f ms\tDownload: %f Mbit/s\tUpload: %f Mbit/s\n", time.Now().Format("Jan 02, 2006 15:04:05"), latency, s.DLSpeed, s.ULSpeed)
+
+			if s.DLSpeed <= 0 {
+				os.Exit(1)
+			}
+
 			if enable_influx {
 				addMetrics(latency, s.DLSpeed, s.ULSpeed)
 			}
