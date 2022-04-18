@@ -8,7 +8,7 @@ do
     du -h ./bin/chiquinha_${arch}
 done
 
-docker buildx build --platform linux/amd64,linux/arm -t uknbr/florindabox-chiquinha --push .
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm -t uknbr/florindabox-chiquinha --push .
 exit $?
 
 #wget https://github.com/docker/buildx/releases/download/v0.7.1/buildx-v0.7.1.linux-amd64
