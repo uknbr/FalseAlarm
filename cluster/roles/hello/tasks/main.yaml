@@ -33,10 +33,11 @@
                 image: "{{ app_image }}"
                 env:
                   - name: MESSAGE
-                    value: FlorindaBox is running!
+                    value: "{{ app_msg }}"
                 ports:
                   - containerPort: "{{ app_port }}"
-
+              nodeSelector:
+                type: "{{ app_node }}"
   - name: Service
     k8s:
       state: present

@@ -1,4 +1,19 @@
 ---
+  - name: Update apt cache
+    apt:
+      update_cache: yes
+      force_apt_get: yes
+      cache_valid_time: 3600
+    tags:
+      - package
+
+  - name: Upgrade packages
+    apt:
+      upgrade: dist
+      force_apt_get: yes
+    tags:
+      - package
+
   - name: Install basic packages
     apt:
       name: "{{ packages }}"
@@ -15,6 +30,8 @@
         - bash-completion
         - python3
         - python3-pip
+    tags:
+      - package
 
   - name: Set timezone
     file:
