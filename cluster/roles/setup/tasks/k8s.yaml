@@ -14,7 +14,7 @@
 - name: Install Kubectl
   get_url:
     url: https://dl.k8s.io/release/v{{ kubectl_version }}/bin/linux/arm/kubectl
-    dest: /usr/local/bin/kubectl
+    dest: /usr/bin/kubectl
     mode: 0755
 
 - name: Install k8s modules
